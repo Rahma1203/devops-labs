@@ -1,29 +1,53 @@
 
+# 🖥️ Linux System Monitoring Script
 
-A Bash-based system monitoring script designed to collect system information and detect potential disk usage issues in Linux environments.
+A lightweight **Bash-based system monitoring tool** designed to collect essential system information and detect potential disk usage issues in Linux environments.
 
+## 🚀 Features
 
+- 🏷️ **Hostname Detection:** Retrieves the system hostname.
+- 📅 **Current Date:** Displays the current system date.
+- ⏱️ **System Uptime:** Reports how long the system has been running.
+- 💾 **Disk Usage Monitoring:** Checks disk usage using `df`.
+- 🔍 **Usage Extraction:** Extracts disk usage percentages using `awk` and `tr`.
+- ⚙️ **Configurable Threshold:** Compares disk usage against a customizable limit.
+- 📝 **Logging:** Generates log messages with monitoring results.
+- 🚨 **Status Alerts:** Displays `WARNING` or `OK` depending on disk usage.
+- 🔢 **Exit Codes:** Returns appropriate exit codes for monitoring and automation.
 
-Features:
+## 🛠️ Technologies Used
 
-Retrieve system hostname.
+| Technology | Purpose |
+|---|---|
+| Bash | Script development |
+| Linux | Operating environment |
+| GNU Coreutils | System information and utilities |
+| AWK | Data extraction and processing |
+| df | Disk usage monitoring |
+| tr | Text processing |
 
-Display current date.
+## 📊 Monitoring Logic
 
-Report system uptime.
+The script checks disk usage against a configurable threshold:
 
-Check disk usage using df.
+- 🟢 **OK (Exit Code 0):** Disk usage is below the configured threshold.
+- 🔴 **WARNING (Exit Code 1):** Disk usage reaches or exceeds the configured threshold.
 
-Extract disk usage percentage using awk and tr.
+## 🎯 Project Purpose
 
-Compare disk usage against a configurable threshold.
+This project was developed to practice and strengthen fundamental Linux system administration and Bash scripting skills, including:
 
-Generate log messages with monitoring results.
+- Linux system information gathering.
+- Command-line utilities and text processing.
+- Conditional statements and logical comparisons.
+- Disk space monitoring.
+- Basic logging and alert generation.
+- Exit status handling and automation fundamentals.
 
-Display WARNING or OK status depending on disk usage.
+## 💻 Environment
 
-Return appropriate exit codes (0 for OK, 1 for WARNING).
+Designed for Linux environments with Bash and standard GNU command-line utilities.
 
-Technologies: Bash · Linux · GNU Coreutils · AWK
+---
 
-Purpose: Practice Linux system administration, Bash scripting, command-line utilities, conditional logic, and basic monitoring techniques.
+**Project Category:** Linux System Administration · Bash Scripting · System Monitoring
