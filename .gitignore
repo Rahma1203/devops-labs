@@ -1,0 +1,8 @@
+.env
+*.pem
+*.key
+credentials*
+secrets/
+.terraform/
+*.tfstate
+*.tfstate.backup
