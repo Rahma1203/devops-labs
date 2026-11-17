@@ -1,0 +1,73 @@
+name:  CI Docker Application
+
+on:
+   push:
+   pull_request:
+
+   permissions:
+     contents: read
+
+   jobs:
+      build-and-test:
+         runs-on: ubuntu-latest
+         timeout-minutes: 10
+      steps:
+          -name: Checkout  repository
+           uses: actions/checkout@v7
+           with:
+              persist-credentials: false
+
+          -name: Validate Docker Compose
+           run: docker compose config --quiet
+
+          -name: Build and start application
+           run:  docker compose up -d --build
+
+          -name: Wait for container health
+           run: |
+               for attempt in {1..20}; do  
+                  status=$(docker inspect \
+                    --format='{{.State.Health.Status}}' \
+                     network-lab 2>/dev/null || true)
+
+                   echo "Health status: ${status:-not available}"
+
+                  if [ "$status" = "$healthy" ];
+                    echo "Application is healthy!"
+                    exit 0
+                  fi
+                 
+                  if ["$status" = "$unhealthy" ];
+                    echo "Aplicaction is unhealthy!"
+                    exit 1
+                  fi
+                 
+                  sleep 2
+               done
+               
+              echo "Health check timeout!"
+              docker logs network-lab
+              exit 1
+                 
+
+
+
+
+           -name: Test HTTP respone
+            run: |
+                curl --fail --silent --show-error \
+                  http://127.0.0.1:8080/ \
+                  -o /tmp/respone.html
+
+                 grep -qi "<html>" /tmp/response.html
+
+                 echo "HTTP test passed!"
+
+            -name: Show logs on failure
+             if: failure()
+             run: docker compose logs
+
+             -name: Cleanup
+              if: always()
+              run: docker compose down --volumes --remove-orphans || true
+
