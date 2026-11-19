@@ -1,0 +1,23 @@
+services:
+      localstack:
+           image: localstack/localstack:latest
+           container_name: devops-s3-local
+           ports:
+              - "127.0.0.1:4566:4566"
+           environment:
+              SERVICES: s3
+              AWS_DEFAULT_REGION: eu-west-1
+              LOCALSTACK_AUTH_TOKEN: ${LOCALSTACK_AUTH_TOKEN}
+
+      aws:
+       image: amazon/aws-cli:latest
+       entrypoint: ["aws"]
+       environment:
+             AWS_ACCESS_KEY_ID: test
+             AWS_SECRET_ACCESS_KEY: test
+             AWS_DEFAULT_REGION: eu-west-1
+             AWS_EC2_METADATA_DISABLED: "true"
+       working_dir: /work
+       volumes:
+        - ./site:/work/site:ro
+        - ./output:/work/output
