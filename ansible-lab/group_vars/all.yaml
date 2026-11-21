@@ -1,0 +1,6 @@
+app_name: "devops-demo"
+environment: "development"
+listen_port: 8082
+welcome_message: "Aplicacion desplegada con Ansible."
+
+deploy_dir: "{{ playbook_dir }}/managed"

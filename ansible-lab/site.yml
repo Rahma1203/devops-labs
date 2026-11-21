@@ -1,0 +1,49 @@
+---
+- name: "Configure a local web application"
+  hosts: local
+  gather_facts: false
+
+  vars_files:
+      - group_vars/all.yaml
+
+  tasks:
+
+       - name: "Validate the application port"
+         ansible.builtin.assert:
+             that:
+                - listen_port | int >= 1024
+                - listen_port | int <= 65535
+             fail_msg: "The port must be between 1024 and 65535."
+
+       - name: Create configuration directory
+         ansible.builtin.file:
+             path: "{{ deploy_dir }}/config"
+             state: directory
+             mode: "0755"
+
+       - name: Create web directory
+         ansible.builtin.file:
+             path: "{{ deploy_dir }}/site"
+             state: directory
+             mode: "0755"
+
+       - name: Generate JSON configuration
+         ansible.builtin.template:
+             src: templates/app.json.j2
+             dest: "{{ deploy_dir }}/config/app.json"
+             mode: "0644"
+
+       - name: Generate HTML page
+         ansible.builtin.template:
+             src: templates/index.html.j2
+             dest: "{{ deploy_dir }}/site/index.html"
+             mode: "0644"
+
+       - name: Validate generated JSON file
+         ansible.builtin.command:
+             argv:
+                - python3
+                - -m
+                - json.tool
+                - "{{ deploy_dir }}/config/app.json"
+         changed_when: false
